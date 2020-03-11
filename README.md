@@ -45,3 +45,36 @@ https://tech-boost.jp/common/books/326
 - プログラマーがhtmlを書かずにPHPなどのプログラミング言語やフレームワークを使う必要があるのはどういった理由でしょうか。
     + htmlのテンプレとDBを用意し、ユーザ毎に違う表示にするため。
     + htmlを書いちゃうと、このメモのように、全部おんなじ表内容になってしまうから。
+
+# PHP/Laravel 11 Bladeテンプレートの継承とLaravel Mixの使い方を活用してみよう	
+課題
+- Bladeテンプレートで、埋め込みたい箇所に利用するワードは何だったでしょうか？
+    + `@yield @section`
+- Webpackで使われているBootstrapやSCSSはどういったものか、調べられる範囲で調べてみましょう。
+    + Bootstrap → 考えなくてもテンプレから作れるページデザイン作れる。CSSフレームワーク。ちょっと重めなのをよく聞く。
+    + SCSS → ↓ の2個を見た感じ、コンパイルが必要だけど、**関数、変数**を使える、**演算、入れ子**可能、特に**継承**を使えるから、後からの手直しで感激するイメージを感じる
+      [Sass（SCSS）でCSSコーディングを効率化・メリットと使い方を知る](https://tech.qookie.jp/posts/info-sass-scss-feature/)
+      [プログラマーから見た、SCSSの正しい(かもしれない)使いかた](https://qiita.com/sasuraisan/items/9a9dfb281cfdf5a12bd3)
+
+
+6. 【応用】 webpack.mix.jsを編集して、profile.scss をコンパイルするように編集してみましょう。
+    + `webpack.mix.js`で `parsing error unexpected token`
+    +  npm run watch を叩くと 案の定 `npm ERR! code ELIFECYCLE` ERROR
+      [npm run watchエラーになった場合](https://qiita.com/ishizukih/items/9673e709832dacaa5155) ← node modules 再インスコも駄目
+      + `webpack.mix.js`の書きミスだと判明。 JSでは末尾にセミコロン(;)なんだよ！
+```php
+  mix.js('resources/js/app.js', 'public/js')
+     .sass('resources/sass/app.scss', 'public/css')
+     .sass('resources/sass/admin.scss', 'public/css')「;」 ←こいつ
+     .sass('resources/sass/profile.scss', 'public/css')（;） ← 本来はここにだけ付ける
+```
+        + いや普通文の終わりには;付けるでしょ(Java並感)
+        + 尚、セミコロン付ける派、いらない派、returnで値を返すときは決して直後に改行を入れない理論。とか色々あるらしい。
+          + [JavaScriptの行末セミコロンは省略すべきか](https://blog.tai2.net/automatic_semilocon_insertion.html)
+          + セミコロンなくても動いたし、無い方がみんな幸せじゃん…？
+      + `webpack.mix.js`直した結果、無事 `npm ERR! code ELIFECYCLE` ERROR喰らいました。(　 Д )　ﾟ　ﾟ
+        + それこそnode modules 再インスコ で走って、バンザイ…
+
+11:51 ちなみに…
+  - Layouts(hoge.blade.php)が出来れば、継承先(@yield)の`views/admin/hoge/create.blade.php`にはHTMLタグとかいらないみたいです。
+    + 書いとけし… 
