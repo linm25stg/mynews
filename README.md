@@ -23,16 +23,25 @@ https://tech-boost.jp/common/books/326
 課題
 
 - URLとControllerやActionを紐付ける機能を何といいますか？
-  + Routing？
+    + Routing？
 - あなたが考える、group化をすることのメリットを考えてみてください。
-  + まとまる → 見やすくなる → 保守しやすい → URL名の変更が 1箇所で済む  
+    + まとまる → 見やすくなる → 保守しやすい → URL名の変更が 1箇所で済む  
 - 「http://XXXXXX.jp/XXX というアクセスが来たときに、 AAAControllerのbbbというAction に渡すRoutingの設定」を書いてみてください。
-  + `Route::get('XXX', 'XXX\AAAController@bbb');`
-  + または
-    ```php
-      Route::group(['prefix'=>'XXX'],function() 
-      {
-        Route::get('/','XXX\AAAController@bbb');// '/' これを入れくるらいなら、グループ化しないほうがいいんじゃね？… 
-      });
-    ```
+    + `Route::get('XXX', 'XXX\AAAController@bbb');`
+    + または
 
+```php
+    Route::group(['prefix'=>'XXX'],function() 
+    {
+      Route::get('/','XXX\AAAController@bbb');// '/' これを入れくるらいなら、グループ化しないほうがいいんじゃね？… 
+    });
+```
+
+# PHP/Laravel 10 ControllerとViewが連携できるようにしよう	
+課題
+- Viewは何をするところでしょうか。簡潔に説明してみてください。
+    + ユーザー固有のDBに合わせてhtmlを生成する所。
+    + Controller から飛んできた指示にユーザー毎、ModelからDBを拾ってきた物をページ固有のテンプレに合わせてhtml生成している
+- プログラマーがhtmlを書かずにPHPなどのプログラミング言語やフレームワークを使う必要があるのはどういった理由でしょうか。
+    + htmlのテンプレとDBを用意し、ユーザ毎に違う表示にするため。
+    + htmlを書いちゃうと、このメモのように、全部おんなじ表内容になってしまうから。
